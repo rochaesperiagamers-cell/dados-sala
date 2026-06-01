@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dados da Sala</title>
+
+<style>
+body{
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
+    padding:20px;
+}
+
+h1{
+    text-align:center;
+    color:#00ff88;
+    margin-bottom:30px;
+}
+
+.bloco{
+    background:#1e1e1e;
+    border:1px solid #333;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:10px;
+    background:#2a2a2a;
+    color:white;
+    border:1px solid #444;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+textarea{
+    height:100px;
+    resize:vertical;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    font-size:18px;
+    font-weight:bold;
+    background:#00ff88;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+</style>
+</head>
+<body>
+
+<h1>DADOS DA SALA</h1>
+
+<div id="container"></div>
+
+<button onclick="salvarDados()">Salvar Dados</button>
+
+<script>
+
+const container = document.getElementById("container");
+
+for(let i = 0; i < 30; i++){
+
+    const bloco = document.createElement("div");
+    bloco.className = "bloco";
+
+    bloco.innerHTML = `
+        <input type="text" placeholder="Nome" class="nome">
+        <textarea placeholder="Dados" class="dados"></textarea>
+    `;
+
+    container.appendChild(bloco);
+}
+
+function salvarDados(){
+
+    const nomes = document.querySelectorAll(".nome");
+    const dados = document.querySelectorAll(".dados");
+
+    let lista = [];
+
+    for(let i = 0; i < nomes.length; i++){
+
+        lista.push({
+            nome: nomes[i].value,
+            dados: dados[i].value
+        });
+    }
+
+    localStorage.setItem("dadosSala", JSON.stringify(lista));
+
+    alert("Dados salvos com sucesso!");
+}
+
+window.onload = function(){
+
+    let salvos = JSON.parse(localStorage.getItem("dadosSala"));
+
+    if(!salvos) return;
+
+    const nomes = document.querySelectorAll(".nome");
+    const dados = document.querySelectorAll(".dados");
+
+    for(let i = 0; i < salvos.length; i++){
+
+        nomes[i].value = salvos[i].nome || "";
+        dados[i].value = salvos[i].dados || "";
+    }
+}
+
+</script>
+
+</body>
+</html>
